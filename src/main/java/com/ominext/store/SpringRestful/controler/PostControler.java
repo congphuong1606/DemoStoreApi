@@ -1,9 +1,6 @@
 package com.ominext.store.SpringRestful.controler;
 
-import com.ominext.store.SpringRestful.entity.Acc;
-import com.ominext.store.SpringRestful.entity.Cmt;
-import com.ominext.store.SpringRestful.entity.Location;
-import com.ominext.store.SpringRestful.entity.Post;
+import com.ominext.store.SpringRestful.entity.*;
 import com.ominext.store.SpringRestful.entity.form.PostDTO;
 import com.ominext.store.SpringRestful.repository.IsLikeRepository;
 import com.ominext.store.SpringRestful.repository.PostRepository;
@@ -94,33 +91,10 @@ public class PostControler {
         return postRepository.allPost();
     }
 
-    //lấy ra toàn bộ posts
-   /* @RequestMapping(path = "/all/{postAccId}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+
+    @RequestMapping(path = "/all/{accId}/{curentPage}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    public List<PostDTO> getAllPosts(@PathVariable("postAccId") long postAccId) {
-//        Iterable<Post> postIterable = postRepository.findAll();
-
-        List<PostDTO> listDto = new ArrayList<>();
-        List<Post> posts = postRepository.allPost();
-        for (Post item : posts) {
-            int isLike = 0;
-            Long aLong = Long.valueOf(String.valueOf(postAccId).concat(String.valueOf(item.getPostId())));
-            if (isLikeRepository.findOne(aLong) != null) {
-                isLike = 1;
-
-            }
-            PostDTO postDTO = new PostDTO(item, isLike);
-            listDto.add(postDTO);
-
-        }
-        return listDto;
-    }*/
-
-    @RequestMapping(path = "/all/{postAccId}/{curentPage}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    @ResponseBody
-    public List<PostDTO> getAllPosts(@PathVariable("postAccId") long postAccId, @PathVariable("curentPage") int curentPage) {
-        //        Iterable<Post> postIterable = postRepository.findAll();
-
+    public List<PostDTO> getAllPosts(@PathVariable("accId") long accId, @PathVariable("curentPage") int curentPage) {
         List<PostDTO> listDto = new ArrayList<>();
         List<Post> posts = postRepository.allPost();
         for (Post item : posts) {
@@ -133,27 +107,26 @@ public class PostControler {
             String postStoreName = item.getPostStoreName();
             String postStoreAvatar = item.getPostStoreAvatar();
             String postImage = item.getPostImage();
-            int isLike = 0;
-            Long aLong = Long.valueOf(String.valueOf(postAccId).concat(String.valueOf(postId)));
-
-            if (isLikeRepository.findOne(aLong) != null) {
-                isLike = 1;
+            Long likeId = Long.valueOf(String.valueOf(accId).concat(String.valueOf(postId)));
+            int i = 0;
+            if (isLikeRepository.findOne(likeId) != null) {
+                i = 1;
 
             }
             PostDTO postDTO = new PostDTO(postId, postContent, postTime,
                     postComment, postLove, postStoreId, postStoreName,
-                    postStoreAvatar, postImage, isLike);
+                    postStoreAvatar, postImage, i);
             listDto.add(postDTO);
 
         }
-        int fromIndex = curentPage*10;
-        int toIndex = fromIndex+10;
-        List<PostDTO> sublist=new ArrayList<>();
-        if(listDto.size()>toIndex){
-            sublist =listDto.subList(fromIndex,toIndex);
-        }else {
-            if(fromIndex<listDto.size()){
-                sublist=listDto.subList(fromIndex,listDto.size());
+        int fromIndex = curentPage * 10;
+        int toIndex = fromIndex + 10;
+        List<PostDTO> sublist = new ArrayList<>();
+        if (listDto.size() > toIndex) {
+            sublist = listDto.subList(fromIndex, toIndex);
+        } else {
+            if (fromIndex < listDto.size()) {
+                sublist = listDto.subList(fromIndex, listDto.size());
             }
         }
         return sublist;
@@ -177,11 +150,11 @@ public class PostControler {
     }
 
     //lấy ra những post của một cửa hàng
-    @RequestMapping(value = "/{storeId}/{myAccId}/{curentPage}", method = RequestMethod.GET,
+    @RequestMapping(value = "/{storeId}/{accId}/{curentPage}", method = RequestMethod.GET,
             produces = {MediaType.APPLICATION_JSON_VALUE})
     public @ResponseBody
     List<PostDTO> getPostStore(@PathVariable("storeId") long storeId,
-                               @PathVariable("myAccId") long myAccId,
+                               @PathVariable("accId") long accId,
                                @PathVariable("curentPage") int curentPage) {
         List<PostDTO> listDto = new ArrayList<>();
         List<Post> posts = postRepository.findAllByPostStoreId(storeId);
@@ -195,27 +168,26 @@ public class PostControler {
             String postStoreName = item.getPostStoreName();
             String postStoreAvatar = item.getPostStoreAvatar();
             String postImage = item.getPostImage();
-            int isLike = 0;
-            Long aLong = Long.valueOf(String.valueOf(myAccId).concat(String.valueOf(postId)));
-
-            if (isLikeRepository.findOne(aLong) != null) {
-                isLike = 1;
+            Long likeId = Long.valueOf(String.valueOf(accId).concat(String.valueOf(postId)));
+            int i = 0;
+            if (isLikeRepository.findOne(likeId) != null) {
+                i = 1;
 
             }
             PostDTO postDTO = new PostDTO(postId, postContent, postTime,
                     postComment, postLove, postStoreId, postStoreName,
-                    postStoreAvatar, postImage, isLike);
+                    postStoreAvatar, postImage, i);
             listDto.add(postDTO);
 
         }
-        int fromIndex = curentPage*10;
-        int toIndex = fromIndex+10;
-        List<PostDTO> sublist=new ArrayList<>();
-        if(listDto.size()>toIndex){
-            sublist =listDto.subList(fromIndex,toIndex);
-        }else {
-            if(fromIndex<listDto.size()){
-                sublist=listDto.subList(fromIndex,listDto.size());
+        int fromIndex = curentPage * 10;
+        int toIndex = fromIndex + 10;
+        List<PostDTO> sublist = new ArrayList<>();
+        if (listDto.size() > toIndex) {
+            sublist = listDto.subList(fromIndex, toIndex);
+        } else {
+            if (fromIndex < listDto.size()) {
+                sublist = listDto.subList(fromIndex, listDto.size());
             }
         }
         return sublist;

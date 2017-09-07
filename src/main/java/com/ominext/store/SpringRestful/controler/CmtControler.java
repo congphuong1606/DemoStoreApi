@@ -30,7 +30,8 @@ public class CmtControler {
         return cmt;
     }
 
-    @RequestMapping(value = "/{cmtPostId}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(value = "/{cmtPostId}", method = RequestMethod.GET,
+            produces = {MediaType.APPLICATION_JSON_VALUE})
     public  @ResponseBody List<Cmt> getCmts(@PathVariable("cmtPostId") long cmtPostId) {
         return cmtRepository.findAllByCmtPostId(cmtPostId);
     }

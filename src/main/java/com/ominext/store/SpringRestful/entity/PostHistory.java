@@ -8,33 +8,15 @@ import java.io.Serializable;
 public class PostHistory  {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     long postId;
-    String postContent;
-    String postTime;
-    int postCountComment;
-    int postCountLike;
-    long postStoreId;
-    String postStoreName;
-    String postStoreAvatar;
-    String postImage;
-    long accMyId;
-    public int isLike;
+    long accId;
 
-    public int getIsLike() {
-        return isLike;
+    public PostHistory(long postId, long accId) {
+        this.postId = postId;
+        this.accId = accId;
     }
 
-    public void setIsLike(int isLike) {
-        this.isLike = isLike;
-    }
-
-    public long getAccMyId() {
-        return accMyId;
-    }
-
-    public void setAccMyId(long accMyId) {
-        this.accMyId = accMyId;
+    public PostHistory() {
     }
 
     public long getPostId() {
@@ -45,67 +27,11 @@ public class PostHistory  {
         this.postId = postId;
     }
 
-    public String getPostContent() {
-        return postContent;
+    public long getAccId() {
+        return accId;
     }
 
-    public void setPostContent(String postContent) {
-        this.postContent = postContent;
-    }
-
-    public String getPostTime() {
-        return postTime;
-    }
-
-    public void setPostTime(String postTime) {
-        this.postTime = postTime;
-    }
-
-    public int getPostCountComment() {
-        return postCountComment;
-    }
-
-    public void setPostCountComment(int postCountComment) {
-        this.postCountComment = postCountComment;
-    }
-
-    public int getPostCountLike() {
-        return postCountLike;
-    }
-
-    public void setPostCountLike(int postCountLike) {
-        this.postCountLike = postCountLike;
-    }
-
-    public long getPostStoreId() {
-        return postStoreId;
-    }
-
-    public void setPostStoreId(long postStoreId) {
-        this.postStoreId = postStoreId;
-    }
-
-    public String getPostStoreName() {
-        return postStoreName;
-    }
-
-    public void setPostStoreName(String postStoreName) {
-        this.postStoreName = postStoreName;
-    }
-
-    public String getPostStoreAvatar() {
-        return postStoreAvatar;
-    }
-
-    public void setPostStoreAvatar(String postStoreAvatar) {
-        this.postStoreAvatar = postStoreAvatar;
-    }
-
-    public String getPostImage() {
-        return postImage;
-    }
-
-    public void setPostImage(String postImage) {
-        this.postImage = postImage;
+    public void setAccId(long accId) {
+        this.accId = accId;
     }
 }

@@ -1,13 +1,12 @@
 package com.ominext.store.SpringRestful.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name="tbl_cmt")
 public class Cmt {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     long cmtId;
     long cmtAccId;
     String cmtAccAvatar;

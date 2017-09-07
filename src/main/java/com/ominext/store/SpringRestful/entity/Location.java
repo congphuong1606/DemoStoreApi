@@ -12,8 +12,8 @@ import java.io.Serializable;
 public class Location implements Serializable {
     @Id
     private long locationId;
-    private float locationLat;
-    private float locationLng;
+    private double locationLat;
+    private double locationLng;
 
 
     public long getLocationId() {
@@ -24,21 +24,19 @@ public class Location implements Serializable {
         this.locationId = locationId;
     }
 
-    public float getLocationLat() {
+    public double getLocationLat() {
         return locationLat;
     }
 
-    public void setLocationLat(float locationLat) {
+    public void setLocationLat(double locationLat) {
         this.locationLat = locationLat;
     }
 
-    public float getLocationLng() {
+    public double getLocationLng() {
         return locationLng;
     }
 
-    public void setLocationLng(float locationLng) {
+    public void setLocationLng(double locationLng) {
         this.locationLng = locationLng;
     }
-
-
 }

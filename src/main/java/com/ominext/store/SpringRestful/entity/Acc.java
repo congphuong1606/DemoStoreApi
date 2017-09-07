@@ -10,7 +10,6 @@ import java.io.Serializable;
 public class Acc implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @Column(name = "acc_id")
     private long accId;
     private String accType;
     private int accNumber;

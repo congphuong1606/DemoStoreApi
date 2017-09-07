@@ -13,55 +13,31 @@ public class IsLikeControler {
     @Autowired
     IsLikeRepository isLikeRepository;
 
-    @RequestMapping(path = "/one/{islike_id}", method = RequestMethod.GET)
+    @RequestMapping(path = "/{likeId}", method = RequestMethod.GET)
     @ResponseBody
-    public Integer isLikePost(@PathVariable("islike_id") long isLikeId) {
-        int check;
-        IsLike isLike = isLikeRepository.findOne(isLikeId);
-        if (isLike != null) {
+    public Integer isLikePost(@PathVariable("likeId") long likeId) {
+        Integer check;
+        if (isLikeRepository.findOne(likeId) != null) {
             check = 1;
         } else check = 0;
         return check;
     }
 
-    @RequestMapping(path = "/liked", method = RequestMethod.POST)
+    @RequestMapping(path = "/add", method = RequestMethod.POST)
     @ResponseBody
     public Integer likePost(@RequestBody IsLike isLike) {
         int check;
-       IsLike like=isLikeRepository.save(isLike);
-        if (like != null) {
+        if (isLikeRepository.save(isLike) != null) {
             check = 1;
         } else check = 0;
         return check;
     }
     //delete
-    @RequestMapping(path = "/{islike_id}", method = RequestMethod.DELETE)
+    @RequestMapping(path = "/{likeId}", method = RequestMethod.DELETE)
     @ResponseBody
-    public int deleteIsLike(@PathVariable("islike_id") long islikeId) {
-       isLikeRepository.delete(islikeId);
+    public int deleteIsLike(@PathVariable("likeId") long likeId) {
+       isLikeRepository.delete(likeId);
         return 0;
-    }
-    //update
-    @RequestMapping(path = "/{islikeId}/{i}", method = RequestMethod.PUT,
-            produces = {MediaType.APPLICATION_JSON_VALUE})
-    @ResponseBody
-    public int deleteIsLike(@PathVariable("islike_id") long islikeId,@RequestBody IsLike isLike,@PathVariable("i") int i) {
-        int check;
-        if(i==1){
-            isLikeRepository.save(isLike);
-            check=1;
-        }else {
-            isLikeRepository.delete(islikeId);
-            check=0;
-        }
-        return check;
-    }
-    //lấy tất cả like cùng acc
-    //
-    @RequestMapping(path = "/{islike_acc}", method = RequestMethod.GET)
-    public @ResponseBody
-    Iterable<IsLike> getIsLikes(@PathVariable("islike_acc") long islikeAcc) {
-        return isLikeRepository.findAllByIslikeAcc(islikeAcc);
     }
 
 

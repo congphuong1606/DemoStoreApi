@@ -7,7 +7,4 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface IsLikeRepository extends CrudRepository<IsLike,Long> {
-    List<IsLike> findAllByIslikeAcc(long id);
-    IsLike findAllByIslikeAccAndIslikePost(long acc,long postId);
-    IsLike findByIslikePostAndIslikeId(long id1, long id12);
 }

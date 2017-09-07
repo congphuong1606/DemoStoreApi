@@ -1,9 +1,12 @@
 package com.ominext.store.SpringRestful.controler;
 
 
+import com.ominext.store.SpringRestful.entity.Post;
 import com.ominext.store.SpringRestful.entity.PostHistory;
 import com.ominext.store.SpringRestful.entity.form.PostDTO;
+import com.ominext.store.SpringRestful.repository.IsLikeRepository;
 import com.ominext.store.SpringRestful.repository.PostHistoryRepository;
+import com.ominext.store.SpringRestful.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -16,44 +19,63 @@ import java.util.List;
 @RequestMapping("/posts/history")
 public class PostHistoryControler {
     @Autowired
+    PostRepository postRepository;
+    @Autowired
     PostHistoryRepository postHistoryRepository;
+    @Autowired
+    IsLikeRepository isLikeRepository;
 
-    @RequestMapping(path = "/add",method = RequestMethod.POST,produces ={MediaType.APPLICATION_JSON_VALUE} )
+    @RequestMapping(path = "/add/{postId}/{accId}", method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    public PostHistory addNewPostHistory(@RequestBody PostHistory postHistory ) {
-       postHistoryRepository.save(postHistory);
-        return postHistory;
+    public Integer addNewPostHistory(@PathVariable("postId") long postId, @PathVariable("accId") long accId) {
+        PostHistory postHistory = new PostHistory(postId, accId);
+        postHistoryRepository.save(postHistory);
+        return 1;
     }
-    @RequestMapping(path = "/{accId}",method = RequestMethod.GET,produces ={MediaType.APPLICATION_JSON_VALUE} )
+
+    @RequestMapping(path = "/{accId}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    public List<PostDTO> getListPosts(@PathVariable("accId") long accId  ) {
-       List<PostHistory>  list = postHistoryRepository.findAllByAccMyId(accId);
-       List<PostDTO> dtoList=new ArrayList<>();
-       for(PostHistory p:list){
-           PostDTO postDTO=new PostDTO(
-                   p.getPostId(),
-                   p.getPostContent(),
-                   p.getPostTime(),
-                   p.getPostCountComment(),
-                   p.getPostCountLike(),
-                   p.getPostStoreId(),
-                   p.getPostStoreName(),
-                   p.getPostStoreAvatar(),
-                   p.getPostImage(),
-                   p.getIsLike());
-           dtoList.add(postDTO);
-       }
+    public List<PostDTO> getListPosts(@PathVariable("accId") long accId) {
+        List<PostHistory> list = postHistoryRepository.findAllByAccId(accId);
+        List<PostDTO> dtoList = new ArrayList<>();
+        List<Post> posts = new ArrayList<>();
+        for (PostHistory p : list) {
+            Post post = postRepository.findOne(p.getPostId());
+            posts.add(post);
+        }
+        for (Post item : posts) {
+            long postId = item.getPostId();
+            String postContent = item.getPostContent();
+            String postTime = item.getPostTime();
+            int postComment = item.getPostCountComment();
+            int postLove = item.getPostCountLike();
+            long postStoreId = item.getPostStoreId();
+            String postStoreName = item.getPostStoreName();
+            String postStoreAvatar = item.getPostStoreAvatar();
+            String postImage = item.getPostImage();
+            Long likeId = Long.valueOf(String.valueOf(accId).concat(String.valueOf(postId)));
+            int i = 0;
+            if (isLikeRepository.findOne(likeId) != null) {
+                i = 1;
+
+            }
+            PostDTO postDTO = new PostDTO(postId, postContent, postTime,
+                    postComment, postLove, postStoreId, postStoreName,
+                    postStoreAvatar, postImage, i);
+            dtoList.add(postDTO);
+        }
         return dtoList;
     }
-    @RequestMapping(path = "/{postId}",method = RequestMethod.DELETE,produces ={MediaType.APPLICATION_JSON_VALUE} )
+
+    @RequestMapping(path = "/{postId}", method = RequestMethod.DELETE, produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    public Integer deletePostHistory(@PathVariable("postId") long postId  ) {
-        int check;
-        try{
+    public Long deletePostHistory(@PathVariable("postId") long postId) {
+        long check;
+        try {
             postHistoryRepository.delete(postId);
-            check=1;
-        }catch (Exception e){
-          check=0;
+            check = postId;
+        } catch (Exception e) {
+            check = 0;
         }
         return check;
     }
