@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface PostHistoryRepository extends CrudRepository<PostHistory,Long>{
     List<PostHistory>  findAllByAccId(long accId);
+    PostHistory  findAllByAccIdAndPostId(long accId,long postId);
 
 }

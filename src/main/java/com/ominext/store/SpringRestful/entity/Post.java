@@ -3,10 +3,11 @@ package com.ominext.store.SpringRestful.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name="tbl_post")
+@Table(name = "tbl_post")
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "post_id")
     long postId;
     String postContent;
     String postTime;

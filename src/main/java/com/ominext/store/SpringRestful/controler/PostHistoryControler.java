@@ -38,21 +38,18 @@ public class PostHistoryControler {
     public List<PostDTO> getListPosts(@PathVariable("accId") long accId) {
         List<PostHistory> list = postHistoryRepository.findAllByAccId(accId);
         List<PostDTO> dtoList = new ArrayList<>();
-        List<Post> posts = new ArrayList<>();
         for (PostHistory p : list) {
+
             Post post = postRepository.findOne(p.getPostId());
-            posts.add(post);
-        }
-        for (Post item : posts) {
-            long postId = item.getPostId();
-            String postContent = item.getPostContent();
-            String postTime = item.getPostTime();
-            int postComment = item.getPostCountComment();
-            int postLove = item.getPostCountLike();
-            long postStoreId = item.getPostStoreId();
-            String postStoreName = item.getPostStoreName();
-            String postStoreAvatar = item.getPostStoreAvatar();
-            String postImage = item.getPostImage();
+            long postId = post.getPostId();
+            String postContent = post.getPostContent();
+            String postTime = post.getPostTime();
+            int postComment = post.getPostCountComment();
+            int postLove = post.getPostCountLike();
+            long postStoreId = post.getPostStoreId();
+            String postStoreName = post.getPostStoreName();
+            String postStoreAvatar = post.getPostStoreAvatar();
+            String postImage = post.getPostImage();
             Long likeId = Long.valueOf(String.valueOf(accId).concat(String.valueOf(postId)));
             int i = 0;
             if (isLikeRepository.findOne(likeId) != null) {
@@ -64,16 +61,21 @@ public class PostHistoryControler {
                     postStoreAvatar, postImage, i);
             dtoList.add(postDTO);
         }
+
         return dtoList;
     }
 
-    @RequestMapping(path = "/{postId}", method = RequestMethod.DELETE, produces = {MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(path = "{accId}/{postId}", method = RequestMethod.DELETE, produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    public Long deletePostHistory(@PathVariable("postId") long postId) {
-        long check;
+    public Long deletePostHistory(@PathVariable("accId") long accId,@PathVariable("postId") long postId) {
+        long check=0;
         try {
-            postHistoryRepository.delete(postId);
-            check = postId;
+            PostHistory postHistory=postHistoryRepository.findAllByAccIdAndPostId(accId,postId);
+            if(postHistory!=null){
+                postHistoryRepository.delete(postHistory.getId());
+                check = postId;
+            }
+
         } catch (Exception e) {
             check = 0;
         }

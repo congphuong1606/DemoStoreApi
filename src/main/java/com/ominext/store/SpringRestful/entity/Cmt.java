@@ -3,13 +3,15 @@ package com.ominext.store.SpringRestful.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name="tbl_cmt")
+@Table(name = "tbl_cmt")
 public class Cmt {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "cmt_id")
     long cmtId;
     long cmtAccId;
     String cmtAccAvatar;
+    @Column(name = "cmt_post_id")
     long cmtPostId;
     String cmtContent;
     String cmtTime;

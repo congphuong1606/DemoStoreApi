@@ -8,6 +8,8 @@ import java.io.Serializable;
 public class PostHistory  {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    long id;
     long postId;
     long accId;
 
@@ -17,6 +19,14 @@ public class PostHistory  {
     }
 
     public PostHistory() {
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public long getPostId() {

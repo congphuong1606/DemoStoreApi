@@ -5,6 +5,7 @@ import com.ominext.store.SpringRestful.repository.CmtRepository;
 import com.sun.xml.internal.bind.v2.model.core.ID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -33,6 +34,6 @@ public class CmtControler {
     @RequestMapping(value = "/{cmtPostId}", method = RequestMethod.GET,
             produces = {MediaType.APPLICATION_JSON_VALUE})
     public  @ResponseBody List<Cmt> getCmts(@PathVariable("cmtPostId") long cmtPostId) {
-        return cmtRepository.findAllByCmtPostId(cmtPostId);
+            return cmtRepository.findAllByCmtPostId(cmtPostId);
     }
 }

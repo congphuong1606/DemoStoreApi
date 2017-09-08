@@ -15,6 +15,6 @@ public interface PostRepository extends CrudRepository<Post, Long> {
     Post findAllByPostId(long postId);
 
     List<Post> findAllByPostStoreId(long postStoreId);
-    @Query("SELECT c FROM Post c")
+    @Query("SELECT c FROM Post c ORDER BY c.postId DESC")
     List<Post> allPost();
 }
